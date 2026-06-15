@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ФинПинг — Telegram-бот финансового пульса для микробизнеса</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0088cc;
+            --dark-bg: #1a1a1b;
+            --light-bg: #ffffff;
+            --gray-bg: #f4f7f9;
+            --text-main: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-size: 2.5rem; font-weight: 800; }
+        h2 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 50px; }
+        h3 { font-size: 1.25rem; font-weight: 600; }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 18px 36px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #0077b5;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero-wrapper {
+            background-color: var(--dark-bg);
+            color: var(--white);
+            padding: 60px 0 100px;
+            text-align: center;
+        }
+
+        .hero-content {
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .price-tag {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .price-tag span {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* Pain Section */
+        .pain-section {
+            background-color: var(--light-bg);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .pain-card {
+            padding: 30px;
+            border-radius: 20px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            border-left: 5px solid #ff4d4d;
+        }
+
+        .pain-card h3 {
+            color: #ff4d4d;
+            margin-bottom: 15px;
+        }
+
+        /* How it works */
+        .how-section {
+            background-color: var(--gray-bg);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .feature-card {
+            padding: 30px;
+            border-radius: 20px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        /* Social Proof */
+        .social-section {
+            background-color: var(--gray-bg);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            padding: 30px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            font-style: italic;
+        }
+
+        .author {
+            margin-top: 20px;
+            font-weight: 600;
+            font-style: normal;
+            display: block;
+            color: var(--text-light);
+        }
+
+        /* CTA Section */
+        .cta-bottom {
+            text-align: center;
+            background-color: var(--light-bg);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            background: var(--dark-bg);
+            color: #999;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Desktop adaptations */
+        @media (min-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            h2 { font-size: 2.5rem; }
+
+            .pain-grid, .steps-grid, .features-grid, .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 2fr);
+            }
+
+            .hero-content {
+                padding: 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-wrapper">
+        <div class="container">
+            <header class="logo">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
+                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                ФинПинг
+            </header>
+
+            <div class="hero hero-content">
+                <h1>Ваш финансовый пульс в Telegram</h1>
+                <p>Узнавайте доход, расход и остаток вчерашнего дня каждое утро в 9:00. Предупреждаем о кассовом разрыве до того, как он случится.</p>
+                <a href="https://t.me/finping_bot" class="btn">Получить ранний доступ</a>
+                <div class="price-tag"><span>500 ₽/мес</span> • 7 дней бесплатно</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="pain-section">
+        <div class="container">
+            <h2>Почему ИП закрываются?</h2>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <h3>82% провалов</h3>
+                    <p>Причина закрытия малого бизнеса в 82% случаев — проблемы с движением денежных средств (кэшфлоу).</p>
+                </div>
+                <div class="pain-card">
+                    <h3>Остаток обманчив</h3>
+                    <p>Деньги на счету сегодня не значат, что их хватит на налоги и аренду через неделю. Без прогноза вы идете вслепую.</p>
+                </div>
+                <div class="pain-card">
+                    <h3>Сложность сервисов</h3>
+                    <p>ПланФакт, Adesk и Финтабло стоят от 2000₽ и требуют часов на внедрение. 70% ИП просто не ведут учет из-за этого.</p>
+                </div>
+                <div class="pain-card">
+                    <h3>ФинПинг — это проще</h3>
+                    <p>В 4 раза дешевле конкурентов и не требует скачивания тяжелых приложений. Только Telegram.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-section">
+        <div class="container">
+            <h2>Как это работает</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Подключите банк</h3>
+                    <p>Безопасная автозагрузка из Т-Банк и Модульбанк за 1 минуту.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Получайте пинги</h3>
+                    <p>Каждое утро бот присылает отчет за вчера и прогноз на неделю.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Действуйте вовремя</h3>
+                    <p>Видите риск кассового разрыва? У вас есть время, чтобы договориться с поставщиками.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="container">
+            <h2>Всё для микробизнеса</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Ежедневная сводка</h3>
+                    <p>Доход, расход и чистый остаток за вчера. Без лишних цифр.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚨</div>
+                    <h3>Прогноз разрыва</h3>
+                    <p>Бот анализирует ваши траты и предупреждает о нехватке средств.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>Автозагрузка</h3>
+                    <p>Интеграция с Т-Банк и Модульбанк. Ручной ввод для остальных.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Прямо в Telegram</h3>
+                    <p>Никаких новых паролей и сложных интерфейсов. Там, где вы общаетесь.</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="https://t.me/finping_bot" class="btn">Попробовать бесплатно</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="target-section">
+        <div class="container">
+            <h2>Для кого ФинПинг?</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.2rem;">
+                <p>Идеально подходит для <strong>ИП, самозанятых и микрокоманд (1-5 человек)</strong> с оборотом от 300 000 до 3 000 000 ₽ в месяц.</p>
+                <p style="margin-top: 20px; color: var(--text-light);">Если вам слишком дорого платить 2500₽ за учет, но страшно потерять контроль — ФинПинг для вас.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="social-section">
+        <div class="container">
+            <h2>Отзывы предпринимателей</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    "Раньше я узнавал, что денег нет, когда пытался оплатить закупку. С ФинПингом я вижу ситуацию на неделю вперед. Это дает спокойствие за 500 рублей."
+                    <span class="author">— Алексей, владелец кофейни</span>
+                </div>
+                <div class="testimonial-card">
+                    "Пробовала Финтабло, но забросила через неделю — слишком сложно. ФинПинг присылает самое важное прямо в ТГ, трачу 2 минуты в день."
+                    <span class="author">— Марина, онлайн-школа дизайна</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-bottom">
+        <div class="container">
+            <h2>Начните контролировать деньги сегодня</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-light);">Первые 7 дней бесплатно, далее — всего 500 ₽/мес.</p>
+            <a href="https://t.me/finping_bot" class="btn">Запустить ФинПинг бота</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ФинПинг. Сделано для предпринимателей СНГ.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">Не является офертой. Telegram является зарегистрированным товарным знаком Telegram FZ-LLC.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple analytics or interaction tracking can go here
+        document.querySelectorAll('a.btn').forEach(button => {
+            button.addEventListener('click', () => {
+                console.log('CTA clicked: ' + button.innerText);
+            });
+        });
+    </script>
+</body>
+</html>
