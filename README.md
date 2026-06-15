@@ -31,3 +31,38 @@
 python3 -m http.server 8000
 ```
 Затем перейдите по адресу `http://localhost:8000`.
+
+## Telegram-бот
+
+Бот собирает контакты потенциальных клиентов и сохраняет их в базу данных Supabase.
+
+### Как запустить бота
+
+1. Установите зависимости:
+   ```bash
+   pip install aiogram supabase
+   ```
+2. Настройте переменные окружения или используйте значения по умолчанию в коде (не рекомендуется для продакшена).
+3. Запустите бота:
+   ```bash
+   BOT_TOKEN="your_token" SUPABASE_URL="your_url" SUPABASE_KEY="your_key" python3 bot.py
+   ```
+
+### Настройка Supabase
+
+Для корректной работы бота в вашем проекте Supabase должна быть создана таблица `leads`. SQL-скрипт для создания таблицы:
+
+```sql
+create table leads (
+  id bigint generated always as identity primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  user_id bigint,
+  username text,
+  business_info text,
+  needed_functionality text
+);
+
+-- Настройка прав доступа (если RLS включен)
+alter table leads enable row level security;
+create policy "Allow public insert" on leads for insert with check (true);
+```
