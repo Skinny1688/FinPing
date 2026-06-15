@@ -77,6 +77,25 @@
             transform: translateY(0);
         }
 
+        .btn-secondary {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--white);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+            border: 2px solid var(--white);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
         /* Hero Section */
         .hero-wrapper {
             background-color: var(--dark-bg);
@@ -120,6 +139,14 @@
             margin: 0 auto 40px;
         }
 
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
         .price-tag {
             margin-top: 20px;
             font-size: 0.9rem;
@@ -129,6 +156,26 @@
         .price-tag span {
             color: var(--white);
             font-weight: 600;
+        }
+
+        /* Lead magnet section */
+        .lead-magnet {
+            background: linear-gradient(135deg, #0088cc 0%, #005f8a 100%);
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .lead-magnet h2 {
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .lead-magnet p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+            opacity: 0.95;
         }
 
         /* Pain Section */
@@ -235,6 +282,10 @@
             background-color: var(--light-bg);
         }
 
+        .cta-bottom .hero-buttons {
+            margin-top: 30px;
+        }
+
         /* Footer */
         footer {
             padding: 40px 20px;
@@ -264,6 +315,11 @@
             .hero-content {
                 padding: 0;
             }
+
+            .hero-buttons {
+                flex-direction: row;
+                justify-content: center;
+            }
         }
 
         @media (min-width: 1024px) {
@@ -291,11 +347,22 @@
             <div class="hero hero-content">
                 <h1>Ваш финансовый пульс в Telegram</h1>
                 <p>Узнавайте доход, расход и остаток вчерашнего дня каждое утро в 9:00. Предупреждаем о кассовом разрыве до того, как он случится.</p>
-                <a href="https://t.me/finping_bot" class="btn">Получить ранний доступ</a>
+                <div class="hero-buttons">
+                    <a href="https://t.me/finpingbot" class="btn">Получить ранний доступ</a>
+                    <a href="https://t.me/finpingbot" class="btn-secondary">Попробовать бесплатно</a>
+                </div>
                 <div class="price-tag"><span>500 ₽/мес</span> • 7 дней бесплатно</div>
             </div>
         </div>
     </div>
+
+    <section class="lead-magnet">
+        <div class="container">
+            <h2>Бесплатный чек-лист: «Контроль кэшфлоу за 10 минут в день»</h2>
+            <p>Получите простую систему ежедневного контроля денег: 5 шагов, которые спасут от кассового разрыва. Отправим в Telegram сразу после регистрации.</p>
+            <a href="https://t.me/finpingbot" class="btn-secondary">Скачать чек-лист в Telegram</a>
+        </div>
+    </section>
 
     <section class="pain-section">
         <div class="container">
@@ -370,7 +437,7 @@
                 </div>
             </div>
             <div style="text-align: center; margin-top: 50px;">
-                <a href="https://t.me/finping_bot" class="btn">Попробовать бесплатно</a>
+                <a href="https://t.me/finpingbot" class="btn">Попробовать бесплатно</a>
             </div>
         </div>
     </section>
@@ -405,7 +472,10 @@
         <div class="container">
             <h2>Начните контролировать деньги сегодня</h2>
             <p style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-light);">Первые 7 дней бесплатно, далее — всего 500 ₽/мес.</p>
-            <a href="https://t.me/finping_bot" class="btn">Запустить ФинПинг бота</a>
+            <div class="hero-buttons">
+                <a href="https://t.me/finpingbot" class="btn">Запустить ФинПинг бота</a>
+                <a href="https://t.me/finpingbot" class="btn-secondary" style="color: var(--primary-color); border-color: var(--primary-color);">Получить чек-лист</a>
+            </div>
         </div>
     </section>
 
@@ -417,8 +487,7 @@
     </footer>
 
     <script>
-        // Simple analytics or interaction tracking can go here
-        document.querySelectorAll('a.btn').forEach(button => {
+        document.querySelectorAll('a.btn, a.btn-secondary').forEach(button => {
             button.addEventListener('click', () => {
                 console.log('CTA clicked: ' + button.innerText);
             });
