@@ -32,11 +32,22 @@ class Registration(StatesGroup):
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.clear()
-    await message.answer(
+    args = message.text.split(maxsplit=1)
+    source = args[1] if len(args) > 1 else "bot"
+    await state.update_data(source=source)
+
+    greeting = (
         "Привет! Я бот ФинПинг — твой финансовый пульс в Telegram.\n\n"
         "Мы скоро запускаемся! Оставь свои данные, чтобы мы могли пригласить тебя первым.\n\n"
-        "Как тебя зовут и какой у тебя бизнес?"
     )
+    if source == "calc":
+        greeting = (
+            "Привет! Вижу, вы проверили кэшфлоу на сайте.\n\n"
+            "ФинПинг будет присылать такой расчёт каждое утро автоматически. "
+            "Оставь данные — пригласим первым, когда запустимся.\n\n"
+        )
+
+    await message.answer(greeting + "Как тебя зовут и какой у тебя бизнес?")
     await state.set_state(Registration.waiting_for_name)
 
 @dp.message(Registration.waiting_for_name)
@@ -53,6 +64,7 @@ async def process_functionality(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     name = user_data.get('name', '')
     functionality = message.text
+    source = user_data.get('source', 'bot')
     username = message.from_user.username
     user_id = message.from_user.id
 
@@ -62,7 +74,7 @@ async def process_functionality(message: types.Message, state: FSMContext):
             "username": username,
             "business_info": name,
             "needed_functionality": functionality,
-            "source": "bot",
+            "source": source,
             "status": "new"
         }
         supabase.table("leads").insert(data).execute()
