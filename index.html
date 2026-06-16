@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ФинПинг — Telegram-бот финансового пульса для микробизнеса. Ежедневный пинг, прогноз кассового разрыва. Ранний доступ.">
+    <meta name="description" content="ФинПинг — Telegram-бот финансового пульса для микробизнеса. Ежедневный пинг, прогноз кассового разрыва. Запуск — август 2026.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ФинПинг — финансовый пульс в Telegram">
+    <meta property="og:description" content="Ежедневный пинг: доход, расход, остаток. Прогноз кассового разрыва за 500 ₽/мес. Запуск — август 2026.">
+    <meta property="og:image" content="og-image.svg">
+    <meta property="og:locale" content="ru_RU">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ФинПинг — финансовый пульс в Telegram">
+    <meta name="twitter:description" content="Ежедневный пинг и прогноз кассового разрыва для ИП и микробизнеса.">
+    <meta name="twitter:image" content="og-image.svg">
     <title>ФинПинг — Telegram-бот финансового пульса для микробизнеса</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -459,7 +468,193 @@
 
         .calc-result.show {
             display: grid;
-            animation: fadeUp 0.5s ease forwards;
+            opacity: 1;
+        }
+
+        .calc-result-full {
+            grid-column: 1 / -1;
+            display: none;
+        }
+
+        .calc-result.show .calc-result-full {
+            display: block;
+        }
+
+        .scenario-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .scenario-tab {
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: var(--text-on-dark);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .scenario-tab.active {
+            background: var(--accent-muted);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .balance-chart {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--primary);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .balance-chart-title {
+            font-size: 0.8rem;
+            color: var(--text-on-dark);
+            margin-bottom: 12px;
+        }
+
+        .balance-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 100px;
+            position: relative;
+        }
+
+        .balance-bar-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .balance-bar {
+            width: 100%;
+            max-width: 28px;
+            border-radius: 4px 4px 0 0;
+            background: var(--accent);
+            transition: height 0.4s ease;
+            min-height: 2px;
+        }
+
+        .balance-bar.negative {
+            background: #ef4444;
+        }
+
+        .balance-bar-label {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+
+        .balance-zero-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-top: 1px dashed rgba(239,68,68,0.5);
+            pointer-events: none;
+        }
+
+        .early-warning {
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            color: var(--text-on-dark);
+        }
+
+        .early-warning strong {
+            color: var(--accent);
+        }
+
+        .calc-cta-bright {
+            display: none;
+            margin-top: 24px;
+            padding: 32px 24px;
+            background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.08) 100%);
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .calc-cta-bright.show {
+            display: block;
+        }
+
+        .calc-cta-bright h3 {
+            color: var(--white);
+            margin-bottom: 8px;
+            font-size: 1.25rem;
+        }
+
+        .calc-cta-bright p {
+            color: var(--text-on-dark);
+            margin-bottom: 20px;
+        }
+
+        .calc-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-share {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-share:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .recommendations {
+            margin-top: 16px;
+        }
+
+        .recommendations li {
+            font-size: 0.9rem;
+            color: var(--text-on-dark);
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .recommendations li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .stress-note {
+            font-size: 0.85rem;
+            color: #f59e0b;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: rgba(245,158,11,0.1);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.25);
         }
 
         .risk-card {
@@ -952,6 +1147,111 @@
             margin-top: 8px;
         }
 
+        /* Security */
+        .security-section {
+            background: #f8fafc;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .security-card {
+            padding: 28px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .security-card .feature-icon-wrap {
+            margin-bottom: 16px;
+        }
+
+        /* FAQ */
+        .faq-section {
+            background: var(--white);
+        }
+
+        .faq-list {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 20px 24px;
+            background: var(--white);
+            border: none;
+            text-align: left;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .faq-question:hover {
+            background: #f8fafc;
+        }
+
+        .faq-icon {
+            font-size: 1.25rem;
+            color: var(--accent);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 24px 20px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        /* Contacts */
+        .contacts-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .contacts-row a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer .contacts-row a {
+            color: #6ee7b7;
+        }
+
+        .contacts-row a:hover {
+            text-decoration: underline;
+        }
+
         /* Responsive */
         @media (min-width: 640px) {
             .calc-inputs {
@@ -991,6 +1291,10 @@
             .pricing-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .security-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (min-width: 1024px) {
@@ -1026,7 +1330,7 @@
                 <div>
                     <div class="badge">
                         <span class="badge-dot"></span>
-                        Скоро запуск · Ранний доступ
+                        Запуск — август 2026 · Ранний доступ
                     </div>
                     <h1>Ваш финансовый пульс в Telegram</h1>
                     <p class="hero-desc">Каждое утро — короткий пинг: доход, расход, остаток. И предупреждение о кассовом разрыве заранее — прямо в Telegram.</p>
@@ -1034,14 +1338,14 @@
                         <a href="https://t.me/finpingbot" class="btn">Записаться в лист ожидания</a>
                         <a href="#cashflow-calc" class="btn-outline">Проверить свой кэшфлоу</a>
                     </div>
-                    <p class="price-tag">Планируемая цена: <strong>500 ₽/мес</strong> · ранний доступ бесплатно</p>
+                    <p class="price-tag">Планируемая цена: <strong>500 ₽/мес</strong> · первые 100 — бесплатно навсегда</p>
                 </div>
 
                 <div class="hero-visual">
                     <div class="chart-card">
                         <div class="chart-header">
                             <span class="chart-label">Остаток на счёте</span>
-                            <span class="chart-value">+12,4%</span>
+                            <span class="chart-value">↑ 12,4% к вчера</span>
                         </div>
                         <svg class="chart-svg" viewBox="0 0 300 80" preserveAspectRatio="none">
                             <defs>
@@ -1083,19 +1387,23 @@
                 <div class="calc-inputs">
                     <div class="input-group">
                         <label for="balance">Остаток на счёте, ₽</label>
-                        <input type="number" id="balance" placeholder="150 000" min="0">
+                        <input type="number" id="balance" placeholder="150 000" min="0" value="">
+                    </div>
+                    <div class="input-group">
+                        <label for="dailyIncome">Средний доход в день, ₽</label>
+                        <input type="number" id="dailyIncome" placeholder="12 000" min="0" value="">
                     </div>
                     <div class="input-group">
                         <label for="dailyExpense">Средний расход в день, ₽</label>
-                        <input type="number" id="dailyExpense" placeholder="8 000" min="0">
+                        <input type="number" id="dailyExpense" placeholder="8 000" min="0" value="">
                     </div>
                     <div class="input-group">
                         <label for="upcomingPayment">Ближайший крупный платёж, ₽</label>
-                        <input type="number" id="upcomingPayment" placeholder="80 000" min="0">
+                        <input type="number" id="upcomingPayment" placeholder="80 000" min="0" value="">
                     </div>
                     <div class="input-group">
                         <label for="daysUntilPayment">Через сколько дней платёж</label>
-                        <input type="number" id="daysUntilPayment" placeholder="14" min="1">
+                        <input type="number" id="daysUntilPayment" placeholder="14" min="1" value="">
                     </div>
                 </div>
 
@@ -1105,27 +1413,42 @@
 
                 <div class="calc-result" id="calcResult">
                     <div class="risk-card" id="riskCard">
-                        <div class="risk-level" id="riskLevel"></div>
-                        <div class="risk-days" id="riskDays"></div>
-                        <p id="riskText"></p>
+                        <div class="scenario-tabs">
+                            <button type="button" class="scenario-tab active" data-scenario="normal">Обычный сценарий</button>
+                            <button type="button" class="scenario-tab" data-scenario="stress">Стресс (+20% расходов)</button>
+                        </div>
+                        <div class="risk-level" id="riskLevel">&nbsp;</div>
+                        <div class="risk-days" id="riskDays">&nbsp;</div>
+                        <p id="riskText">&nbsp;</p>
+                        <div class="early-warning" id="earlyWarning" style="display:none"></div>
+                        <div class="balance-chart" id="balanceChart" style="display:none">
+                            <div class="balance-chart-title">Прогноз баланса по дням</div>
+                            <div class="balance-bars" id="balanceBars"></div>
+                        </div>
                     </div>
                     <div class="ping-preview">
                         <div class="ping-preview-title">
                             <svg class="icon" style="width:16px;height:16px;color:var(--accent)" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            Пример утреннего пинга
+                            Вот что вы будете получать каждое утро в 9:00
                         </div>
-                        <div class="ping-preview-body" id="pingPreview"></div>
+                        <div class="ping-preview-body" id="pingPreview">&nbsp;</div>
+                    </div>
+                    <div class="calc-result-full">
+                        <div class="calc-tips" id="calcTips">
+                            <h4>Что сделать прямо сейчас</h4>
+                            <ul class="recommendations" id="tipsList"></ul>
+                            <div class="stress-note" id="stressNote" style="display:none"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="calc-tips" id="calcTips" style="display:none">
-                    <h4>Что можно сделать прямо сейчас</h4>
-                    <ul id="tipsList"></ul>
-                </div>
-
-                <div class="calc-cta" id="calcCta" style="display:none">
-                    <p>Хотите такой расчёт каждое утро автоматически?</p>
-                    <a href="https://t.me/finpingbot?start=calc" class="btn">Записаться в лист ожидания</a>
+                <div class="calc-cta-bright" id="calcCtaBright">
+                    <h3>Узнали бы за <span id="warningDays">5</span> дней до разрыва</h3>
+                    <p>Без ФинПинга — в день платежа. С ботом — заранее. Этого достаточно, чтобы договориться с поставщиками.</p>
+                    <div class="calc-actions">
+                        <a href="https://t.me/finpingbot?start=calc" class="btn">Получать такой прогноз каждое утро →</a>
+                        <button type="button" class="btn-share" id="shareBtn">Отправить результат коллеге</button>
+                    </div>
                 </div>
 
                 <p class="calc-disclaimer">Упрощённый расчёт для ориентира. ФинПинг учтёт все транзакции и даст точный прогноз.</p>
@@ -1152,8 +1475,8 @@
                     </div>
                     <div class="pain-stat">70–80%</div>
                     <h3>ИП без управленческого учёта</h3>
-                    <p>Большинство предпринимателей не знают реальную прибыль и не видят картину целиком.</p>
-                    <p class="pain-source">по данным IDF Eurasia, 12 000+ респондентов</p>
+                    <p>По данным IDF Eurasia (опрос 12 000+ предпринимателей): 70–80% ИП не ведут управленческий учёт и не знают реальную прибыль.</p>
+                    <p class="pain-source">IDF Eurasia, 12 000+ респондентов</p>
                 </div>
                 <div class="pain-card animate-in">
                     <div class="pain-card-icon">
@@ -1170,7 +1493,7 @@
                     </div>
                     <div class="pain-stat">500 ₽</div>
                     <h3>Что мы делаем</h3>
-                    <p>Ежедневный пинг + прогноз кассового разрыва. Без Excel и без SaaS за 2000+ ₽. Только Telegram.</p>
+                    <p>Ежедневный пинг + прогноз кассового разрыва. От 500 ₽/мес — в разы дешевле ПланФакт (от 2050 ₽) и Seeneco (от 990 ₽).</p>
                 </div>
             </div>
         </div>
@@ -1184,8 +1507,8 @@
                 <div class="step animate-in">
                     <div class="step-number">1</div>
                     <h3>Подключите банк или введите данные</h3>
-                    <p>На старте: автозагрузка из Т-Банк и Модульбанк. Для остальных — ручной ввод за 2 минуты.</p>
-                    <span class="step-badge">На старте</span>
+                    <p>На старте: автозагрузка из Модульбанк (открытый API). Т-Банк — в Roadmap. Для остальных — ручной ввод за 2 минуты.</p>
+                    <span class="step-badge">Модульбанк на старте</span>
                 </div>
                 <div class="step animate-in">
                     <div class="step-number">2</div>
@@ -1224,8 +1547,8 @@
                     <div class="feature-icon-wrap">
                         <svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
                     </div>
-                    <h3>Автозагрузка<span class="feature-badge">На старте</span></h3>
-                    <p>Интеграция с Т-Банк и Модульбанк. Ручной ввод для остальных банков.</p>
+                    <h3>Автозагрузка<span class="feature-badge">Модульбанк</span></h3>
+                    <p>На старте: Модульбанк (открытый API). Т-Банк — в Roadmap. Ручной ввод для остальных банков.</p>
                 </div>
                 <div class="feature-card animate-in">
                     <div class="feature-icon-wrap">
@@ -1263,6 +1586,12 @@
                             <td>B2B микробизнес</td>
                         </tr>
                         <tr>
+                            <td><strong>Цена</strong></td>
+                            <td>0–300 ₽/мес</td>
+                            <td>от 990 ₽/мес</td>
+                            <td>500 ₽/мес</td>
+                        </tr>
+                        <tr>
                             <td><strong>Пинг каждое утро</strong></td>
                             <td>Нет</td>
                             <td>Нет / email-отчёты</td>
@@ -1271,7 +1600,7 @@
                         <tr>
                             <td><strong>Прогноз разрыва</strong></td>
                             <td>Нет</td>
-                            <td>от 4 500 ₽/мес</td>
+                            <td>от 2050 ₽/мес</td>
                             <td>500 ₽/мес</td>
                         </tr>
                         <tr>
@@ -1283,7 +1612,7 @@
                     </tbody>
                 </table>
             </div>
-            <p class="compare-note animate-in">B2B финтех в Telegram — свободная ниша. Мы строим первым.</p>
+            <p class="compare-note animate-in">Ниша, где нет простого и доступного решения. Мы делаем первый бот, который не просто показывает цифры, а предупреждает о разрыве.</p>
         </div>
     </section>
 
@@ -1291,28 +1620,28 @@
     <section class="pricing-section">
         <div class="container">
             <h2 class="section-title animate-in">Тарифы</h2>
-            <p class="section-subtitle animate-in">Планируемые цены. Запишитесь сейчас — ранний доступ бесплатно.</p>
+            <p class="section-subtitle animate-in">Запуск — август 2026. Первые 100 записавшихся — бесплатный доступ навсегда.</p>
             <div class="pricing-grid">
                 <div class="pricing-card featured animate-in">
                     <div class="pricing-name">Ранний доступ</div>
                     <div class="pricing-price">0 ₽ <span>/ сейчас</span></div>
-                    <p class="pricing-desc">Запишитесь в лист ожидания и получите доступ первым, когда запустимся.</p>
+                    <p class="pricing-desc">Первые 100 пользователей из листа ожидания получат бесплатный доступ навсегда. Остальные — приоритетный доступ при запуске.</p>
                     <ul class="pricing-features">
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Первые 100 — бесплатно навсегда</li>
                         <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Приоритетный доступ к боту</li>
-                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Влияние на функционал</li>
-                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Спецусловия при запуске</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Влияние на функционал до запуска</li>
                     </ul>
                     <a href="https://t.me/finpingbot" class="btn" style="width:100%">Записаться</a>
                 </div>
                 <div class="pricing-card animate-in">
                     <div class="pricing-name">ФинПинг</div>
                     <div class="pricing-price">500 ₽ <span>/ мес</span></div>
-                    <p class="pricing-desc">Планируемая цена после запуска. В 4× дешевле ПланФакт и Seeneco.</p>
+                    <p class="pricing-desc">Планируемая цена после запуска. 7 дней бесплатно — попробуйте без риска. От 500 ₽/мес — в разы дешевле ПланФакт (от 2050 ₽) и Seeneco (от 990 ₽).</p>
                     <ul class="pricing-features">
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> 7 дней бесплатного триала</li>
                         <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Ежедневный пинг в 9:00</li>
                         <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Прогноз кассового разрыва</li>
-                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Автозагрузка из банка</li>
-                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Работа в Telegram</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Автозагрузка из Модульбанк</li>
                     </ul>
                     <a href="https://t.me/finpingbot" class="btn btn-outline-dark" style="width:100%">Узнать о запуске</a>
                 </div>
@@ -1327,14 +1656,79 @@
             <div class="target-content animate-in">
                 <p>Идеально подходит для <strong>ИП, самозанятых и микрокоманд (1–5 человек)</strong> с оборотом от 300 000 до 3 000 000 ₽ в месяц.</p>
                 <p style="margin-top:16px;color:var(--text-light)">Если вам слишком дорого платить 2500 ₽ за учёт, но страшно потерять контроль — ФинПинг для вас.</p>
-                <p style="margin-top:16px;color:var(--text-light);font-size:0.95rem">После налоговой реформы 2025–2026 контроль кэшфлоу станет ещё важнее.</p>
+                <p style="margin-top:16px;color:var(--text-light);font-size:0.95rem">С 2025 года налоги растут — прогрессивная шкала НДФЛ, повышение НДС. Контроль кэшфлоу перестал быть опцией, стал необходимостью.</p>
                 <div class="target-tags">
                     <span class="target-tag">ИП</span>
                     <span class="target-tag">Самозанятые</span>
                     <span class="target-tag">Кофейни</span>
+                    <span class="target-tag">СТО</span>
                     <span class="target-tag">Онлайн-школы</span>
                     <span class="target-tag">Мастерские</span>
                     <span class="target-tag">Фриланс</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security -->
+    <section class="security-section">
+        <div class="container">
+            <h2 class="section-title animate-in">Безопасность данных</h2>
+            <p class="section-subtitle animate-in">Финтех требует доверия. Мы проектируем сервис с безопасностью с первого дня.</p>
+            <div class="security-grid">
+                <div class="security-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3>Доступ только на чтение</h3>
+                    <p>Подключение к банку — только для чтения транзакций. Вы можете отозвать доступ в любой момент.</p>
+                </div>
+                <div class="security-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Шифрование данных</h3>
+                    <p>Все финансовые данные передаются и хранятся в зашифрованном виде. Соответствие требованиям безопасности.</p>
+                </div>
+                <div class="security-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                    </div>
+                    <h3>Не передаём третьим лицам</h3>
+                    <p>Ваши данные не продаются и не передаются рекламным сетям. Только для вашего учёта.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <h2 class="section-title animate-in">Частые вопросы</h2>
+            <div class="faq-list">
+                <div class="faq-item animate-in">
+                    <button class="faq-question" type="button">Какие банки поддерживаются?<span class="faq-icon">+</span></button>
+                    <div class="faq-answer">На старте — Модульбанк (открытый API для автозагрузки). Т-Банк — в Roadmap. Для остальных банков — ручной ввод операций за 2 минуты в день.</div>
+                </div>
+                <div class="faq-item animate-in">
+                    <button class="faq-question" type="button">Насколько безопасно подключать банк?<span class="faq-icon">+</span></button>
+                    <div class="faq-answer">Доступ только на чтение — бот не может переводить деньги. Данные шифруются, доступ можно отозвать в любой момент. Мы не передаём информацию третьим лицам.</div>
+                </div>
+                <div class="faq-item animate-in">
+                    <button class="faq-question" type="button">Можно ли вести два ИП или несколько счетов?<span class="faq-icon">+</span></button>
+                    <div class="faq-answer">Планируем поддержку нескольких бизнесов в одном аккаунте. На старте — один бизнес на аккаунт. Запишитесь в лист ожидания, если нужна эта функция — учтём при разработке.</div>
+                </div>
+                <div class="faq-item animate-in">
+                    <button class="faq-question" type="button">Чем ФинПинг отличается от ПланФакт?<span class="faq-icon">+</span></button>
+                    <div class="faq-answer">ПланФакт — мощный SaaS от 2050 ₽/мес с часами на настройку. ФинПинг — ежедневный пинг и прогноз разрыва за 500 ₽/мес прямо в Telegram. Без сложного интерфейса и обучения.</div>
+                </div>
+                <div class="faq-item animate-in">
+                    <button class="faq-question" type="button">Как отменить подписку?<span class="faq-icon">+</span></button>
+                    <div class="faq-answer">Одной кнопкой в боте — без звонков и писем. Подписка не продлевается автоматически без вашего согласия. 7 дней триала — бесплатно, отменить можно в любой момент.</div>
+                </div>
+                <div class="faq-item animate-in">
+                    <button class="faq-question" type="button">Когда запуск?<span class="faq-icon">+</span></button>
+                    <div class="faq-answer">Планируем запуск в августе 2026. Запишитесь в лист ожидания — первые 100 получат бесплатный доступ навсегда, остальные — уведомление о запуске первыми.</div>
                 </div>
             </div>
         </div>
@@ -1365,7 +1759,7 @@
     <section class="cta-bottom">
         <div class="container">
             <h2 class="section-title animate-in">Начните контролировать деньги</h2>
-            <p style="margin-bottom:32px;font-size:1.05rem;color:var(--text-light)" class="animate-in">Сервис в разработке. Запишитесь в лист ожидания — сообщим о запуске первым.</p>
+            <p style="margin-bottom:32px;font-size:1.05rem;color:var(--text-light)" class="animate-in">Запуск — август 2026. Запишитесь в лист ожидания — первые 100 получат бесплатный доступ навсегда.</p>
             <div class="hero-buttons animate-in">
                 <a href="https://t.me/finpingbot" class="btn">Записаться в лист ожидания</a>
                 <a href="#cashflow-calc" class="btn btn-outline-dark">Проверить кэшфлоу бесплатно</a>
@@ -1376,116 +1770,310 @@
     <footer>
         <div class="container">
             <p>&copy; 2026 ФинПинг. Сделано для предпринимателей СНГ.</p>
-            <p>Сервис находится в разработке. Информация на сайте не является публичной офертой.</p>
+            <div class="contacts-row">
+                <a href="https://t.me/finpingbot">Telegram-бот</a>
+                <a href="https://t.me/finping_news">Telegram-канал</a>
+                <a href="mailto:hello@finping.ru">hello@finping.ru</a>
+            </div>
+            <p style="margin-top:16px">Сервис находится в разработке. Информация на сайте не является публичной офертой.</p>
             <p>Telegram является зарегистрированным товарным знаком Telegram FZ-LLC.</p>
         </div>
     </footer>
 
     <script>
-        function formatMoney(n) {
-            return n.toLocaleString('ru-RU') + ' ₽';
-        }
+        (function() {
+            var calcState = null;
+            var currentScenario = 'normal';
 
-        document.getElementById('calcBtn').addEventListener('click', function() {
-            var balance = parseFloat(document.getElementById('balance').value) || 0;
-            var dailyExpense = parseFloat(document.getElementById('dailyExpense').value) || 0;
-            var upcomingPayment = parseFloat(document.getElementById('upcomingPayment').value) || 0;
-            var daysUntilPayment = parseInt(document.getElementById('daysUntilPayment').value) || 0;
-
-            if (balance <= 0 || dailyExpense <= 0) {
-                alert('Укажите остаток на счёте и средний расход в день');
-                return;
+            function formatMoney(n) {
+                return Math.round(n).toLocaleString('ru-RU') + ' ₽';
             }
 
-            var daysUntilGap = Math.floor(balance / dailyExpense);
-            var remainingAtPayment = balance - (dailyExpense * daysUntilPayment);
-            var hasGap = upcomingPayment > 0 && daysUntilPayment > 0 && remainingAtPayment < upcomingPayment;
-
-            var riskClass, riskLabel, riskDaysText, riskText;
-
-            if (hasGap || daysUntilGap < 14) {
-                riskClass = 'risk-red';
-                riskLabel = 'Высокий риск';
-                riskDaysText = hasGap ? daysUntilPayment + ' дн.' : daysUntilGap + ' дн.';
-                riskText = hasGap
-                    ? 'К дате платежа (' + formatMoney(upcomingPayment) + ') на счёте останется ' + formatMoney(Math.max(0, remainingAtPayment)) + ' — не хватит.'
-                    : 'При текущем темпе средств хватит примерно на ' + daysUntilGap + ' дней.';
-            } else if (daysUntilGap < 30) {
-                riskClass = 'risk-yellow';
-                riskLabel = 'Средний риск';
-                riskDaysText = daysUntilGap + ' дн.';
-                riskText = 'При текущем темпе средств хватит на ~' + daysUntilGap + ' дней. Следите за крупными платежами.';
-            } else {
-                riskClass = 'risk-green';
-                riskLabel = 'Низкий риск';
-                riskDaysText = '30+ дн.';
-                riskText = 'При текущем темпе запас прочности хороший. Но без учёта доходов картина может быть другой.';
+            function getInputs() {
+                return {
+                    balance: parseFloat(document.getElementById('balance').value) || 0,
+                    dailyIncome: parseFloat(document.getElementById('dailyIncome').value) || 0,
+                    dailyExpense: parseFloat(document.getElementById('dailyExpense').value) || 0,
+                    upcomingPayment: parseFloat(document.getElementById('upcomingPayment').value) || 0,
+                    daysUntilPayment: parseInt(document.getElementById('daysUntilPayment').value, 10) || 0
+                };
             }
 
-            var riskCard = document.getElementById('riskCard');
-            riskCard.className = 'risk-card ' + riskClass;
-            document.getElementById('riskLevel').textContent = riskLabel;
-            document.getElementById('riskDays').textContent = riskDaysText;
-            document.getElementById('riskText').textContent = riskText;
+            function computeScenario(inputs, stress) {
+                var expense = stress ? inputs.dailyExpense * 1.2 : inputs.dailyExpense;
+                var income = inputs.dailyIncome;
+                var net = income - expense;
+                var projection = [];
+                var chartDays = Math.max(14, inputs.daysUntilPayment || 14);
 
-            var pingHtml = '📊 <strong>ФинПинг · 9:00</strong><br><br>';
-            pingHtml += 'Расход: −' + formatMoney(dailyExpense) + '/день<br>';
-            pingHtml += 'Остаток: <strong>' + formatMoney(balance) + '</strong><br>';
-            if (hasGap) {
-                pingHtml += '<span style="color:#dc2626;font-weight:600">⚠️ Прогноз: разрыв возможен через ' + daysUntilPayment + ' дн.</span><br>';
-                pingHtml += '📅 Через ' + daysUntilPayment + ' дн.: платёж ' + formatMoney(upcomingPayment);
-            } else {
-                pingHtml += '<span style="color:#10B981;font-weight:600">✓ Запас: ~' + daysUntilGap + ' дней</span>';
-                if (upcomingPayment > 0 && daysUntilPayment > 0) {
-                    pingHtml += '<br>📅 Через ' + daysUntilPayment + ' дн.: платёж ' + formatMoney(upcomingPayment);
+                for (var d = 0; d <= chartDays; d++) {
+                    var bal = inputs.balance + net * d;
+                    if (inputs.upcomingPayment > 0 && inputs.daysUntilPayment > 0 && d === inputs.daysUntilPayment) {
+                        bal -= inputs.upcomingPayment;
+                    }
+                    projection.push({ day: d, balance: bal });
                 }
+
+                var remainingAtPayment = inputs.balance + net * (inputs.daysUntilPayment || 0);
+                if (inputs.upcomingPayment > 0 && inputs.daysUntilPayment > 0) {
+                    remainingAtPayment -= inputs.upcomingPayment;
+                }
+                var hasPaymentGap = inputs.upcomingPayment > 0 && inputs.daysUntilPayment > 0 && remainingAtPayment < 0;
+
+                var gapDay = null;
+                if (net < 0) {
+                    gapDay = Math.ceil(inputs.balance / (expense - income));
+                }
+                if (hasPaymentGap) {
+                    gapDay = inputs.daysUntilPayment;
+                }
+
+                var daysUntilGap = gapDay !== null ? gapDay : (net >= 0 ? 999 : Math.ceil(inputs.balance / (expense - income)));
+
+                return {
+                    expense: expense,
+                    income: income,
+                    net: net,
+                    projection: projection,
+                    gapDay: gapDay,
+                    hasPaymentGap: hasPaymentGap,
+                    remainingAtPayment: remainingAtPayment,
+                    daysUntilGap: daysUntilGap
+                };
             }
-            document.getElementById('pingPreview').innerHTML = pingHtml;
 
-            var tips = [];
-            if (hasGap || daysUntilGap < 14) {
-                tips.push('Договоритесь об отсрочке с поставщиком заранее — не в день платежа');
-                tips.push('Отложите налоги отдельно: остаток на счёте обманчив');
+            function renderBalanceChart(projection) {
+                var chartEl = document.getElementById('balanceChart');
+                var barsEl = document.getElementById('balanceBars');
+                chartEl.style.display = 'block';
+                barsEl.innerHTML = '';
+
+                var balances = projection.map(function(p) { return p.balance; });
+                var maxBal = Math.max.apply(null, balances.concat([1]));
+                var minBal = Math.min.apply(null, balances.concat([0]));
+                var range = maxBal - minBal || 1;
+                var zeroPercent = maxBal > 0 && minBal < 0 ? (maxBal / range) * 100 : 100;
+
+                if (minBal < 0) {
+                    var zeroLine = document.createElement('div');
+                    zeroLine.className = 'balance-zero-line';
+                    zeroLine.style.bottom = zeroPercent + '%';
+                    barsEl.appendChild(zeroLine);
+                }
+
+                projection.forEach(function(p) {
+                    var wrap = document.createElement('div');
+                    wrap.className = 'balance-bar-wrap';
+                    var bar = document.createElement('div');
+                    bar.className = 'balance-bar' + (p.balance < 0 ? ' negative' : '');
+                    var height = Math.max(2, ((p.balance - minBal) / range) * 100);
+                    bar.style.height = height + '%';
+                    var label = document.createElement('span');
+                    label.className = 'balance-bar-label';
+                    label.textContent = p.day;
+                    wrap.appendChild(bar);
+                    wrap.appendChild(label);
+                    barsEl.appendChild(wrap);
+                });
             }
-            if (daysUntilGap < 30) {
-                tips.push('Запишите все регулярные платежи: аренда, зарплаты, налоги');
+
+            function buildRecommendations(inputs, result) {
+                var tips = [];
+                var days = inputs.daysUntilPayment || 14;
+
+                if (result.hasPaymentGap && inputs.upcomingPayment > 0) {
+                    var deferDays = Math.min(30, Math.max(7, Math.ceil(Math.abs(result.remainingAtPayment) / Math.max(inputs.dailyIncome, 1))));
+                    tips.push('Отсрочьте платёж ' + formatMoney(inputs.upcomingPayment) + ' на ' + deferDays + ' дней — договоритесь с контрагентом заранее');
+                }
+
+                if (result.gapDay !== null && days > 0) {
+                    var minIncome = result.expense + Math.max(0, (inputs.upcomingPayment - inputs.balance) / days);
+                    if (minIncome > 0 && minIncome > inputs.dailyIncome) {
+                        tips.push('Нужно зарабатывать минимум ' + formatMoney(minIncome) + '/день, чтобы избежать разрыва');
+                    }
+                    var maxExpense = inputs.dailyIncome - Math.max(0, (inputs.upcomingPayment - inputs.balance) / days);
+                    if (maxExpense > 0 && maxExpense < result.expense) {
+                        tips.push('Сократите расход до ' + formatMoney(maxExpense) + '/день — тогда хватит до платежа');
+                    }
+                }
+
+                if (tips.length === 0) {
+                    tips.push('Запишите все регулярные платежи: аренда, зарплаты, налоги');
+                    tips.push('Отложите налоги отдельно — остаток на счёте обманчив');
+                }
+
+                return tips.slice(0, 3);
             }
-            tips.push('Ведите учёт хотя бы 10 минут в день — это дешевле кассового разрыва');
 
-            var tipsList = document.getElementById('tipsList');
-            tipsList.innerHTML = tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+            function renderResults(scenario) {
+                if (!calcState) return;
 
-            document.getElementById('calcResult').classList.add('show');
-            document.getElementById('calcTips').style.display = 'block';
-            document.getElementById('calcCta').style.display = 'block';
+                currentScenario = scenario;
+                var inputs = calcState.inputs;
+                var result = calcState[scenario];
 
-            console.log('Calculator used: gap=' + daysUntilGap + ' days, risk=' + riskClass);
-        });
+                document.querySelectorAll('.scenario-tab').forEach(function(tab) {
+                    tab.classList.toggle('active', tab.getAttribute('data-scenario') === scenario);
+                });
 
-        document.querySelectorAll('a.btn, a.btn-outline, a.btn-outline-dark').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                console.log('CTA clicked: ' + btn.textContent.trim());
-            });
-        });
+                var riskClass, riskLabel, riskDaysText, riskText;
+                var gapDays = result.daysUntilGap;
 
-        if ('IntersectionObserver' in window) {
-            var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+                if (result.hasPaymentGap || gapDays < 14) {
+                    riskClass = 'risk-red';
+                    riskLabel = 'Высокий риск';
+                    riskDaysText = (result.gapDay !== null ? result.gapDay : gapDays) + ' дн.';
+                    riskText = result.hasPaymentGap
+                        ? 'К дате платежа (' + formatMoney(inputs.upcomingPayment) + ') на счёте останется ' + formatMoney(Math.max(0, result.remainingAtPayment + inputs.upcomingPayment)) + ' — не хватит ' + formatMoney(Math.abs(result.remainingAtPayment)) + '.'
+                        : 'При текущем темпе средств хватит примерно на ' + gapDays + ' дней.';
+                } else if (gapDays < 30) {
+                    riskClass = 'risk-yellow';
+                    riskLabel = 'Средний риск';
+                    riskDaysText = gapDays + ' дн.';
+                    riskText = 'Запас прочности ~' + gapDays + ' дней. Следите за крупными платежами.';
+                } else {
+                    riskClass = 'risk-green';
+                    riskLabel = 'Низкий риск';
+                    riskDaysText = '30+ дн.';
+                    riskText = 'Запас прочности хороший. Но неучтённые расходы могут изменить картину.';
+                }
+
+                if (scenario === 'stress') {
+                    riskText += ' Стресс-сценарий: расходы на 20% выше обычного — «а ведь так и бывает».';
+                }
+
+                var riskCard = document.getElementById('riskCard');
+                riskCard.className = 'risk-card ' + riskClass;
+                document.getElementById('riskLevel').textContent = riskLabel;
+                document.getElementById('riskDays').textContent = riskDaysText;
+                document.getElementById('riskText').textContent = riskText;
+
+                var warningDays = result.gapDay !== null ? Math.max(1, result.gapDay - 5) : 5;
+                var earlyEl = document.getElementById('earlyWarning');
+                if (result.hasPaymentGap || gapDays < 30) {
+                    earlyEl.style.display = 'block';
+                    earlyEl.innerHTML = 'С <strong>ФинПингом</strong> вы узнали бы за <strong>' + warningDays + ' дней</strong> до разрыва. Без бота — только в день платежа.';
+                    document.getElementById('warningDays').textContent = warningDays;
+                } else {
+                    earlyEl.style.display = 'none';
+                }
+
+                renderBalanceChart(result.projection);
+
+                var pingHtml = '📊 <strong>ФинПинг · 9:00</strong><br><br>';
+                if (result.income > 0) {
+                    pingHtml += 'Доход: +' + formatMoney(result.income) + '/день<br>';
+                }
+                pingHtml += 'Расход: −' + formatMoney(result.expense) + '/день<br>';
+                pingHtml += 'Остаток: <strong>' + formatMoney(inputs.balance) + '</strong><br>';
+                if (result.hasPaymentGap) {
+                    pingHtml += '<span style="color:#dc2626;font-weight:600">⚠️ Прогноз: разрыв через ' + inputs.daysUntilPayment + ' дн.</span><br>';
+                    pingHtml += '📅 Через ' + inputs.daysUntilPayment + ' дн.: платёж ' + formatMoney(inputs.upcomingPayment);
+                } else if (gapDays < 999) {
+                    pingHtml += '<span style="color:#10B981;font-weight:600">✓ Запас: ~' + gapDays + ' дней</span>';
+                    if (inputs.upcomingPayment > 0 && inputs.daysUntilPayment > 0) {
+                        pingHtml += '<br>📅 Через ' + inputs.daysUntilPayment + ' дн.: платёж ' + formatMoney(inputs.upcomingPayment);
+                    }
+                }
+                document.getElementById('pingPreview').innerHTML = pingHtml;
+
+                var tips = buildRecommendations(inputs, result);
+                document.getElementById('tipsList').innerHTML = tips.map(function(t) {
+                    return '<li>' + t + '</li>';
+                }).join('');
+
+                var stressNote = document.getElementById('stressNote');
+                if (scenario === 'stress') {
+                    stressNote.style.display = 'block';
+                    stressNote.textContent = 'Стресс-сценарий (+20% к расходам): разрыв наступает раньше, чем кажется. Именно так часто случается в реальности.';
+                } else {
+                    stressNote.style.display = 'none';
+                }
+
+                calcState.lastShareText = 'Прогноз кэшфлоу: ' + riskLabel.toLowerCase() + ', запас ~' + riskDaysText + '. Проверь свой: ' + window.location.origin + window.location.pathname + '#cashflow-calc';
+            }
+
+            function runCalc() {
+                var inputs = getInputs();
+                if (inputs.balance <= 0 || inputs.dailyExpense <= 0) {
+                    alert('Укажите остаток на счёте и средний расход в день');
+                    return;
+                }
+
+                calcState = {
+                    inputs: inputs,
+                    normal: computeScenario(inputs, false),
+                    stress: computeScenario(inputs, true)
+                };
+
+                document.getElementById('calcResult').classList.add('show');
+                document.getElementById('calcCtaBright').classList.add('show');
+                renderResults(currentScenario);
+
+                document.getElementById('calcResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                console.log('Calculator used: scenario=' + currentScenario);
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('calcBtn').addEventListener('click', runCalc);
+
+                document.querySelectorAll('.scenario-tab').forEach(function(tab) {
+                    tab.addEventListener('click', function() {
+                        if (!calcState) return;
+                        renderResults(tab.getAttribute('data-scenario'));
+                    });
+                });
+
+                document.getElementById('shareBtn').addEventListener('click', function() {
+                    var text = calcState && calcState.lastShareText
+                        ? calcState.lastShareText
+                        : 'Проверь свой кэшфлоу: ' + window.location.href;
+                    if (navigator.share) {
+                        navigator.share({ title: 'ФинПинг — прогноз кэшфлоу', text: text, url: window.location.href }).catch(function() {});
+                    } else if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text).then(function() {
+                            alert('Результат скопирован — отправьте коллеге');
+                        });
+                    } else {
+                        prompt('Скопируйте ссылку:', text);
                     }
                 });
-            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
-            document.querySelectorAll('.animate-in').forEach(function(el) {
-                observer.observe(el);
+                document.querySelectorAll('.faq-question').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var item = btn.closest('.faq-item');
+                        var isOpen = item.classList.contains('open');
+                        document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+                        if (!isOpen) item.classList.add('open');
+                    });
+                });
+
+                document.querySelectorAll('a.btn, a.btn-outline, a.btn-outline-dark').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        console.log('CTA clicked: ' + btn.textContent.trim());
+                    });
+                });
+
+                if ('IntersectionObserver' in window) {
+                    var observer = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+                    document.querySelectorAll('.animate-in').forEach(function(el) {
+                        observer.observe(el);
+                    });
+                } else {
+                    document.querySelectorAll('.animate-in').forEach(function(el) {
+                        el.classList.add('visible');
+                    });
+                }
             });
-        } else {
-            document.querySelectorAll('.animate-in').forEach(function(el) {
-                el.classList.add('visible');
-            });
-        }
+        })();
     </script>
 </body>
 </html>
