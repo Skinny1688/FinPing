@@ -3,231 +3,683 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ФинПинг — Telegram-бот финансового пульса для микробизнеса. Ежедневный пинг, прогноз кассового разрыва. Ранний доступ.">
     <title>ФинПинг — Telegram-бот финансового пульса для микробизнеса</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #0088cc;
-            --dark-bg: #1a1a1b;
-            --light-bg: #ffffff;
-            --gray-bg: #f4f7f9;
-            --text-main: #333333;
-            --text-light: #666666;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --primary: #0A192F;
+            --primary-light: #112240;
+            --primary-muted: #1a3358;
+            --white: #FFFFFF;
+            --accent: #10B981;
+            --accent-hover: #059669;
+            --accent-muted: rgba(16, 185, 129, 0.12);
+            --text-main: #0A192F;
+            --text-light: #64748b;
+            --text-on-dark: #cbd5e1;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --radius: 10px;
+            --radius-lg: 12px;
+            --shadow: 0 4px 24px rgba(10, 25, 47, 0.08);
+            --shadow-lg: 0 12px 40px rgba(10, 25, 47, 0.12);
         }
 
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text-main);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-        }
-
-        section {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            background: var(--white);
         }
 
         .container {
             width: 100%;
             max-width: 1100px;
             margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
         }
 
         h1, h2, h3 {
             line-height: 1.2;
-            margin-bottom: 20px;
         }
 
-        h1 { font-size: 2.5rem; font-weight: 800; }
-        h2 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 50px; }
-        h3 { font-size: 1.25rem; font-weight: 600; }
+        h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; }
+        h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 700; }
+        h3 { font-size: 1.125rem; font-weight: 600; }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 18px 36px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: transform 0.2s, background-color 0.2s;
-            border: none;
-            cursor: pointer;
+        .section-title {
             text-align: center;
+            margin-bottom: 48px;
         }
 
-        .btn:hover {
-            background-color: #0077b5;
-            transform: translateY(-2px);
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: -32px auto 48px;
+            font-size: 1.05rem;
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            display: inline-block;
-            background-color: transparent;
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--accent);
             color: var(--white);
             padding: 16px 32px;
-            border-radius: 12px;
+            border-radius: var(--radius);
             text-decoration: none;
             font-weight: 600;
             font-size: 1rem;
-            transition: background-color 0.2s;
-            border: 2px solid var(--white);
+            border: none;
             cursor: pointer;
-            text-align: center;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
         }
 
-        .btn-secondary:hover {
-            background-color: rgba(255,255,255,0.1);
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
         }
 
-        /* Hero Section */
-        .hero-wrapper {
-            background-color: var(--dark-bg);
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
             color: var(--white);
-            padding: 60px 0 100px;
-            text-align: center;
+            padding: 14px 28px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 2px solid rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
         }
 
-        .hero-content {
-            padding: 0 20px;
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.7);
+        }
+
+        .btn-outline-dark {
+            color: var(--primary);
+            border-color: var(--border-strong);
+        }
+
+        .btn-outline-dark:hover {
+            background: var(--accent-muted);
+            border-color: var(--accent);
+            color: var(--accent-hover);
+        }
+
+        /* Icons */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.75;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .icon-lg {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        @keyframes drawLine {
+            from { stroke-dashoffset: 200; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--primary);
+            color: var(--white);
+            padding: 48px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 40px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 32px;
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
-            background-color: var(--primary-color);
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .hero h1 {
-            margin-bottom: 24px;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-muted);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(16,185,129,0.25);
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: #ccc;
-            max-width: 600px;
-            margin: 0 auto 40px;
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-ring 2s ease-out infinite;
+            position: relative;
+        }
+
+        .hero h1 {
+            margin-bottom: 20px;
+            animation: fadeUp 0.7s ease forwards;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-on-dark);
+            max-width: 520px;
+            margin-bottom: 32px;
+            animation: fadeUp 0.7s 0.1s ease forwards;
+            opacity: 0;
         }
 
         .hero-buttons {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            align-items: center;
+            gap: 12px;
             margin-bottom: 24px;
+            animation: fadeUp 0.7s 0.2s ease forwards;
+            opacity: 0;
         }
 
         .price-tag {
-            margin-top: 20px;
             font-size: 0.9rem;
-            color: #999;
+            color: var(--text-on-dark);
+            animation: fadeUp 0.7s 0.3s ease forwards;
+            opacity: 0;
         }
 
-        .price-tag span {
-            color: var(--white);
-            font-weight: 600;
+        .price-tag strong {
+            color: var(--accent);
         }
 
-        /* Lead magnet section */
-        .lead-magnet {
-            background: linear-gradient(135deg, #0088cc 0%, #005f8a 100%);
-            color: var(--white);
-            padding: 60px 20px;
-            text-align: center;
+        /* Hero chart illustration */
+        .hero-visual {
+            position: relative;
+            animation: fadeUp 0.8s 0.2s ease forwards;
+            opacity: 0;
         }
 
-        .lead-magnet h2 {
-            color: var(--white);
+        .chart-card {
+            background: var(--primary-light);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .lead-magnet p {
-            max-width: 700px;
-            margin: 0 auto 30px;
-            font-size: 1.1rem;
-            opacity: 0.95;
+        .chart-label {
+            font-size: 0.8rem;
+            color: var(--text-on-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        /* Pain Section */
+        .chart-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 120px;
+        }
+
+        .chart-line {
+            stroke: var(--accent);
+            stroke-width: 2.5;
+            fill: none;
+            stroke-dasharray: 200;
+            animation: drawLine 2s ease forwards 0.5s;
+        }
+
+        .chart-area {
+            fill: url(#chartGradient);
+            opacity: 0;
+            animation: countUp 1s ease forwards 1.5s;
+        }
+
+        .ping-card {
+            background: var(--white);
+            color: var(--text-main);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            margin-top: 16px;
+            box-shadow: var(--shadow-lg);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .ping-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .ping-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .ping-body {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .ping-warning {
+            color: #dc2626;
+            font-weight: 600;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Calculator */
+        .calc-section {
+            background: var(--primary);
+            color: var(--white);
+            padding: 80px 0;
+        }
+
+        .calc-section .section-title {
+            color: var(--white);
+        }
+
+        .calc-section .section-subtitle {
+            color: var(--text-on-dark);
+        }
+
+        .calc-widget {
+            background: var(--primary-light);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calc-inputs {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-on-dark);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            background: var(--primary);
+            color: var(--white);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .calc-btn-wrap {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .calc-result {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .calc-result.show {
+            display: grid;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .risk-card {
+            background: var(--primary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .risk-card.risk-green { border-color: var(--accent); }
+        .risk-card.risk-yellow { border-color: #f59e0b; }
+        .risk-card.risk-red { border-color: #ef4444; }
+
+        .risk-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .risk-green .risk-level { background: var(--accent-muted); color: var(--accent); }
+        .risk-yellow .risk-level { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .risk-red .risk-level { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+        .risk-days {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .risk-green .risk-days { color: var(--accent); }
+        .risk-yellow .risk-days { color: #f59e0b; }
+        .risk-red .risk-days { color: #ef4444; }
+
+        .ping-preview {
+            background: var(--white);
+            color: var(--text-main);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .ping-preview-title {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ping-preview-body {
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .calc-tips {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .calc-tips h4 {
+            font-size: 0.9rem;
+            color: var(--text-on-dark);
+            margin-bottom: 12px;
+        }
+
+        .calc-tips ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .calc-tips li {
+            font-size: 0.9rem;
+            color: var(--text-on-dark);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .calc-tips li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .calc-cta {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .calc-cta p {
+            color: var(--text-on-dark);
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        .calc-disclaimer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 16px;
+        }
+
+        /* Pain cards */
         .pain-section {
-            background-color: var(--light-bg);
+            background: var(--white);
         }
 
         .pain-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 30px;
+            gap: 20px;
         }
 
         .pain-card {
-            padding: 30px;
-            border-radius: 20px;
+            padding: 28px;
+            border-radius: var(--radius-lg);
             background: var(--white);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .pain-card:hover {
             box-shadow: var(--shadow);
-            border-left: 5px solid #ff4d4d;
+            border-color: var(--border-strong);
         }
 
-        .pain-card h3 {
-            color: #ff4d4d;
-            margin-bottom: 15px;
+        .pain-card-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(239,68,68,0.08);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: #ef4444;
         }
 
-        /* How it works */
+        .pain-card.accent-card {
+            border-color: var(--accent);
+            background: var(--accent-muted);
+        }
+
+        .pain-card.accent-card .pain-card-icon {
+            background: rgba(16,185,129,0.15);
+            color: var(--accent);
+        }
+
+        .pain-stat {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #ef4444;
+            margin-bottom: 4px;
+        }
+
+        .pain-card.accent-card .pain-stat {
+            color: var(--accent);
+        }
+
+        .pain-source {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 12px;
+        }
+
+        /* Steps */
         .how-section {
-            background-color: var(--gray-bg);
+            background: #f8fafc;
         }
 
         .steps-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 32px;
         }
 
         .step {
             text-align: center;
+            padding: 32px 24px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
         }
 
         .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
+            font-size: 1.1rem;
             margin: 0 auto 20px;
+        }
+
+        .step-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            background: var(--accent-muted);
+            color: var(--accent);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-weight: 600;
+            margin-top: 12px;
         }
 
         /* Features */
@@ -238,69 +690,285 @@
         }
 
         .feature-card {
-            padding: 30px;
-            border-radius: 20px;
+            padding: 28px;
+            border-radius: var(--radius-lg);
             background: var(--white);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
             box-shadow: var(--shadow);
         }
 
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 15px;
+        .feature-icon-wrap {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-muted);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--accent);
         }
 
-        /* Social Proof */
-        .social-section {
-            background-color: var(--gray-bg);
+        .feature-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: var(--primary);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
         }
 
-        .testimonial-grid {
+        /* Comparison */
+        .compare-section {
+            background: #f8fafc;
+        }
+
+        .compare-table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--white);
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-table th {
+            background: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .compare-table th:first-child {
+            border-radius: var(--radius-lg) 0 0 0;
+        }
+
+        .compare-table th:last-child {
+            background: var(--accent);
+        }
+
+        .compare-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .compare-table td:last-child {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .compare-note {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Pricing */
+        .pricing-section {
+            background: var(--white);
+        }
+
+        .pricing-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 30px;
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .testimonial-card {
-            padding: 30px;
+        .pricing-card {
+            padding: 36px 32px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border);
             background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            font-style: italic;
+            position: relative;
+            transition: box-shadow 0.2s, border-color 0.2s;
         }
 
-        .author {
-            margin-top: 20px;
+        .pricing-card.featured {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Ранний доступ';
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: var(--accent);
+            color: var(--white);
+            padding: 4px 14px;
+            border-radius: 100px;
+            font-size: 0.8rem;
             font-weight: 600;
-            font-style: normal;
-            display: block;
+        }
+
+        .pricing-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            font-weight: 500;
             color: var(--text-light);
         }
 
-        /* CTA Section */
-        .cta-bottom {
+        .pricing-desc {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .pricing-features .check {
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Quotes */
+        .quotes-section {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .quotes-section .section-title {
+            color: var(--white);
+        }
+
+        .quotes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .quote-card {
+            padding: 28px;
+            background: var(--primary-light);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            font-style: italic;
+            color: var(--text-on-dark);
+            line-height: 1.7;
+        }
+
+        .quote-source {
+            margin-top: 16px;
+            font-style: normal;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Target */
+        .target-section {
+            background: var(--white);
             text-align: center;
-            background-color: var(--light-bg);
+        }
+
+        .target-content {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.15rem;
+        }
+
+        .target-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .target-tag {
+            background: var(--accent-muted);
+            color: var(--accent-hover);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(16,185,129,0.2);
+        }
+
+        /* CTA bottom */
+        .cta-bottom {
+            background: #f8fafc;
+            text-align: center;
         }
 
         .cta-bottom .hero-buttons {
-            margin-top: 30px;
+            justify-content: center;
         }
 
         /* Footer */
         footer {
-            padding: 40px 20px;
-            background: var(--dark-bg);
-            color: #999;
+            padding: 40px 0;
+            background: var(--primary);
+            color: rgba(255,255,255,0.5);
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* Desktop adaptations */
-        @media (min-width: 768px) {
-            h1 { font-size: 3.5rem; }
-            h2 { font-size: 2.5rem; }
+        footer p + p {
+            margin-top: 8px;
+        }
 
-            .pain-grid, .steps-grid, .features-grid, .testimonial-grid {
+        /* Responsive */
+        @media (min-width: 640px) {
+            .calc-inputs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-buttons {
+                flex-direction: row;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pain-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -309,16 +977,19 @@
             }
 
             .features-grid {
-                grid-template-columns: repeat(2, 2fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .hero-content {
-                padding: 0;
+            .quotes-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .hero-buttons {
-                flex-direction: row;
-                justify-content: center;
+            .calc-result.show {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -327,171 +998,494 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="hero-wrapper">
+    <!-- Hero -->
+    <header class="hero">
         <div class="container">
-            <header class="logo">
+            <div class="logo">
                 <div class="logo-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
-                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg class="icon" viewBox="0 0 24 24" stroke="white" fill="none">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                     </svg>
                 </div>
                 ФинПинг
-            </header>
+            </div>
 
-            <div class="hero hero-content">
-                <h1>Ваш финансовый пульс в Telegram</h1>
-                <p>Узнавайте доход, расход и остаток вчерашнего дня каждое утро в 9:00. Предупреждаем о кассовом разрыве до того, как он случится.</p>
-                <div class="hero-buttons">
-                    <a href="https://t.me/finpingbot" class="btn">Получить ранний доступ</a>
-                    <a href="https://t.me/finpingbot" class="btn-secondary">Попробовать бесплатно</a>
+            <div class="hero-grid">
+                <div>
+                    <div class="badge">
+                        <span class="badge-dot"></span>
+                        Скоро запуск · Ранний доступ
+                    </div>
+                    <h1>Ваш финансовый пульс в Telegram</h1>
+                    <p class="hero-desc">Каждое утро — короткий пинг: доход, расход, остаток. И предупреждение о кассовом разрыве заранее — прямо в Telegram.</p>
+                    <div class="hero-buttons">
+                        <a href="https://t.me/finpingbot" class="btn">Записаться в лист ожидания</a>
+                        <a href="#cashflow-calc" class="btn-outline">Проверить свой кэшфлоу</a>
+                    </div>
+                    <p class="price-tag">Планируемая цена: <strong>500 ₽/мес</strong> · ранний доступ бесплатно</p>
                 </div>
-                <div class="price-tag"><span>500 ₽/мес</span> • 7 дней бесплатно</div>
+
+                <div class="hero-visual">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <span class="chart-label">Остаток на счёте</span>
+                            <span class="chart-value">+12,4%</span>
+                        </div>
+                        <svg class="chart-svg" viewBox="0 0 300 80" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#10B981" stop-opacity="0.3"/>
+                                    <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path class="chart-area" d="M0,60 L50,55 L100,45 L150,50 L200,30 L250,25 L300,15 L300,80 L0,80 Z"/>
+                            <polyline class="chart-line" points="0,60 50,55 100,45 150,50 200,30 250,25 300,15"/>
+                        </svg>
+                        <div class="ping-card">
+                            <div class="ping-header">
+                                <span class="ping-dot"></span>
+                                ФинПинг · 9:00
+                            </div>
+                            <div class="ping-body">
+                                Вчера: доход +45 000 ₽, расход −32 000 ₽<br>
+                                Остаток: <strong>128 000 ₽</strong>
+                                <div class="ping-warning">
+                                    <svg class="icon" style="width:16px;height:16px;color:#dc2626" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    Прогноз: разрыв через 12 дней
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </header>
 
-    <section class="lead-magnet">
+    <!-- Calculator -->
+    <section class="calc-section" id="cashflow-calc">
         <div class="container">
-            <h2>Бесплатный чек-лист: «Контроль кэшфлоу за 10 минут в день»</h2>
-            <p>Получите простую систему ежедневного контроля денег: 5 шагов, которые спасут от кассового разрыва. Отправим в Telegram сразу после регистрации.</p>
-            <a href="https://t.me/finpingbot" class="btn-secondary">Скачать чек-лист в Telegram</a>
+            <h2 class="section-title">Проверьте свой кэшфлоу за 30 секунд</h2>
+            <p class="section-subtitle">Узнайте, через сколько дней возможен кассовый разрыв — и посмотрите, как будет выглядеть ваш утренний пинг</p>
+
+            <div class="calc-widget">
+                <div class="calc-inputs">
+                    <div class="input-group">
+                        <label for="balance">Остаток на счёте, ₽</label>
+                        <input type="number" id="balance" placeholder="150 000" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="dailyExpense">Средний расход в день, ₽</label>
+                        <input type="number" id="dailyExpense" placeholder="8 000" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="upcomingPayment">Ближайший крупный платёж, ₽</label>
+                        <input type="number" id="upcomingPayment" placeholder="80 000" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="daysUntilPayment">Через сколько дней платёж</label>
+                        <input type="number" id="daysUntilPayment" placeholder="14" min="1">
+                    </div>
+                </div>
+
+                <div class="calc-btn-wrap">
+                    <button class="btn" id="calcBtn" type="button">Рассчитать</button>
+                </div>
+
+                <div class="calc-result" id="calcResult">
+                    <div class="risk-card" id="riskCard">
+                        <div class="risk-level" id="riskLevel"></div>
+                        <div class="risk-days" id="riskDays"></div>
+                        <p id="riskText"></p>
+                    </div>
+                    <div class="ping-preview">
+                        <div class="ping-preview-title">
+                            <svg class="icon" style="width:16px;height:16px;color:var(--accent)" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            Пример утреннего пинга
+                        </div>
+                        <div class="ping-preview-body" id="pingPreview"></div>
+                    </div>
+                </div>
+
+                <div class="calc-tips" id="calcTips" style="display:none">
+                    <h4>Что можно сделать прямо сейчас</h4>
+                    <ul id="tipsList"></ul>
+                </div>
+
+                <div class="calc-cta" id="calcCta" style="display:none">
+                    <p>Хотите такой расчёт каждое утро автоматически?</p>
+                    <a href="https://t.me/finpingbot?start=calc" class="btn">Записаться в лист ожидания</a>
+                </div>
+
+                <p class="calc-disclaimer">Упрощённый расчёт для ориентира. ФинПинг учтёт все транзакции и даст точный прогноз.</p>
+            </div>
         </div>
     </section>
 
+    <!-- Pain -->
     <section class="pain-section">
         <div class="container">
-            <h2>Почему ИП закрываются?</h2>
+            <h2 class="section-title animate-in">Почему ИП теряют деньги?</h2>
             <div class="pain-grid">
-                <div class="pain-card">
-                    <h3>82% провалов</h3>
-                    <p>Причина закрытия малого бизнеса в 82% случаев — проблемы с движением денежных средств (кэшфлоу).</p>
+                <div class="pain-card animate-in">
+                    <div class="pain-card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <div class="pain-stat">82%</div>
+                    <h3>Закрытия из-за кэшфлоу</h3>
+                    <p>Главная причина закрытия малого бизнеса — проблемы с движением денежных средств, а не отсутствие клиентов.</p>
                 </div>
-                <div class="pain-card">
-                    <h3>Остаток обманчив</h3>
-                    <p>Деньги на счету сегодня не значат, что их хватит на налоги и аренду через неделю. Без прогноза вы идете вслепую.</p>
+                <div class="pain-card animate-in">
+                    <div class="pain-card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <div class="pain-stat">70–80%</div>
+                    <h3>ИП без управленческого учёта</h3>
+                    <p>Большинство предпринимателей не знают реальную прибыль и не видят картину целиком.</p>
+                    <p class="pain-source">по данным IDF Eurasia, 12 000+ респондентов</p>
                 </div>
-                <div class="pain-card">
-                    <h3>Сложность сервисов</h3>
-                    <p>ПланФакт, Adesk и Финтабло стоят от 2000₽ и требуют часов на внедрение. 70% ИП просто не ведут учет из-за этого.</p>
+                <div class="pain-card animate-in">
+                    <div class="pain-card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="pain-stat">65%</div>
+                    <h3>Теряют 10–30% прибыли</h3>
+                    <p>Хаос в учёте приводит к незаметным утечкам — деньги уходят, а предприниматель не видит куда.</p>
+                    <p class="pain-source">по данным БизКуб</p>
                 </div>
-                <div class="pain-card">
-                    <h3>ФинПинг — это проще</h3>
-                    <p>В 4 раза дешевле конкурентов и не требует скачивания тяжелых приложений. Только Telegram.</p>
+                <div class="pain-card accent-card animate-in">
+                    <div class="pain-card-icon">
+                        <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <div class="pain-stat">500 ₽</div>
+                    <h3>Что мы делаем</h3>
+                    <p>Ежедневный пинг + прогноз кассового разрыва. Без Excel и без SaaS за 2000+ ₽. Только Telegram.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- How it works -->
     <section class="how-section">
         <div class="container">
-            <h2>Как это работает</h2>
+            <h2 class="section-title animate-in">Как это будет работать</h2>
             <div class="steps-grid">
-                <div class="step">
+                <div class="step animate-in">
                     <div class="step-number">1</div>
-                    <h3>Подключите банк</h3>
-                    <p>Безопасная автозагрузка из Т-Банк и Модульбанк за 1 минуту.</p>
+                    <h3>Подключите банк или введите данные</h3>
+                    <p>На старте: автозагрузка из Т-Банк и Модульбанк. Для остальных — ручной ввод за 2 минуты.</p>
+                    <span class="step-badge">На старте</span>
                 </div>
-                <div class="step">
+                <div class="step animate-in">
                     <div class="step-number">2</div>
                     <h3>Получайте пинги</h3>
-                    <p>Каждое утро бот присылает отчет за вчера и прогноз на неделю.</p>
+                    <p>Каждое утро бот пришлёт сводку за вчера и прогноз на неделю — без лишних цифр.</p>
                 </div>
-                <div class="step">
+                <div class="step animate-in">
                     <div class="step-number">3</div>
                     <h3>Действуйте вовремя</h3>
-                    <p>Видите риск кассового разрыва? У вас есть время, чтобы договориться с поставщиками.</p>
+                    <p>Увидели риск разрыва? Есть время договориться с поставщиками, а не в день платежа.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Features -->
     <section class="features-section">
         <div class="container">
-            <h2>Всё для микробизнеса</h2>
+            <h2 class="section-title animate-in">Всё для микробизнеса</h2>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
+                <div class="feature-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
                     <h3>Ежедневная сводка</h3>
-                    <p>Доход, расход и чистый остаток за вчера. Без лишних цифр.</p>
+                    <p>Доход, расход и чистый остаток за вчера. Без лишних цифр и сложных отчётов.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚨</div>
+                <div class="feature-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
                     <h3>Прогноз разрыва</h3>
-                    <p>Бот анализирует ваши траты и предупреждает о нехватке средств.</p>
+                    <p>Бот проанализирует траты и предупредит о нехватке средств заранее.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔌</div>
-                    <h3>Автозагрузка</h3>
-                    <p>Интеграция с Т-Банк и Модульбанк. Ручной ввод для остальных.</p>
+                <div class="feature-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                    </div>
+                    <h3>Автозагрузка<span class="feature-badge">На старте</span></h3>
+                    <p>Интеграция с Т-Банк и Модульбанк. Ручной ввод для остальных банков.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
+                <div class="feature-card animate-in">
+                    <div class="feature-icon-wrap">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
                     <h3>Прямо в Telegram</h3>
-                    <p>Никаких новых паролей и сложных интерфейсов. Там, где вы общаетесь.</p>
+                    <p>Никаких новых паролей и сложных интерфейсов. Там, где вы уже общаетесь.</p>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 50px;">
-                <a href="https://t.me/finpingbot" class="btn">Попробовать бесплатно</a>
+            <div style="text-align:center;margin-top:48px">
+                <a href="https://t.me/finpingbot" class="btn">Записаться в лист ожидания</a>
             </div>
         </div>
     </section>
 
+    <!-- Comparison -->
+    <section class="compare-section">
+        <div class="container">
+            <h2 class="section-title animate-in">Почему Telegram, а не SaaS?</h2>
+            <div class="compare-table-wrap animate-in">
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Личные финансы-боты</th>
+                            <th>SaaS-сервисы</th>
+                            <th>ФинПинг</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Фокус</strong></td>
+                            <td>B2C, семья</td>
+                            <td>B2B, но перегружен</td>
+                            <td>B2B микробизнес</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Пинг каждое утро</strong></td>
+                            <td>Нет</td>
+                            <td>Нет / email-отчёты</td>
+                            <td>Да</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Прогноз разрыва</strong></td>
+                            <td>Нет</td>
+                            <td>от 4 500 ₽/мес</td>
+                            <td>500 ₽/мес</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Где работает</strong></td>
+                            <td>Telegram</td>
+                            <td>Браузер / приложение</td>
+                            <td>Telegram</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="compare-note animate-in">B2B финтех в Telegram — свободная ниша. Мы строим первым.</p>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2 class="section-title animate-in">Тарифы</h2>
+            <p class="section-subtitle animate-in">Планируемые цены. Запишитесь сейчас — ранний доступ бесплатно.</p>
+            <div class="pricing-grid">
+                <div class="pricing-card featured animate-in">
+                    <div class="pricing-name">Ранний доступ</div>
+                    <div class="pricing-price">0 ₽ <span>/ сейчас</span></div>
+                    <p class="pricing-desc">Запишитесь в лист ожидания и получите доступ первым, когда запустимся.</p>
+                    <ul class="pricing-features">
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Приоритетный доступ к боту</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Влияние на функционал</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Спецусловия при запуске</li>
+                    </ul>
+                    <a href="https://t.me/finpingbot" class="btn" style="width:100%">Записаться</a>
+                </div>
+                <div class="pricing-card animate-in">
+                    <div class="pricing-name">ФинПинг</div>
+                    <div class="pricing-price">500 ₽ <span>/ мес</span></div>
+                    <p class="pricing-desc">Планируемая цена после запуска. В 4× дешевле ПланФакт и Seeneco.</p>
+                    <ul class="pricing-features">
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Ежедневный пинг в 9:00</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Прогноз кассового разрыва</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Автозагрузка из банка</li>
+                        <li><svg class="icon check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Работа в Telegram</li>
+                    </ul>
+                    <a href="https://t.me/finpingbot" class="btn btn-outline-dark" style="width:100%">Узнать о запуске</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target -->
     <section class="target-section">
         <div class="container">
-            <h2>Для кого ФинПинг?</h2>
-            <div style="max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.2rem;">
-                <p>Идеально подходит для <strong>ИП, самозанятых и микрокоманд (1-5 человек)</strong> с оборотом от 300 000 до 3 000 000 ₽ в месяц.</p>
-                <p style="margin-top: 20px; color: var(--text-light);">Если вам слишком дорого платить 2500₽ за учет, но страшно потерять контроль — ФинПинг для вас.</p>
+            <h2 class="section-title animate-in">Для кого ФинПинг?</h2>
+            <div class="target-content animate-in">
+                <p>Идеально подходит для <strong>ИП, самозанятых и микрокоманд (1–5 человек)</strong> с оборотом от 300 000 до 3 000 000 ₽ в месяц.</p>
+                <p style="margin-top:16px;color:var(--text-light)">Если вам слишком дорого платить 2500 ₽ за учёт, но страшно потерять контроль — ФинПинг для вас.</p>
+                <p style="margin-top:16px;color:var(--text-light);font-size:0.95rem">После налоговой реформы 2025–2026 контроль кэшфлоу станет ещё важнее.</p>
+                <div class="target-tags">
+                    <span class="target-tag">ИП</span>
+                    <span class="target-tag">Самозанятые</span>
+                    <span class="target-tag">Кофейни</span>
+                    <span class="target-tag">Онлайн-школы</span>
+                    <span class="target-tag">Мастерские</span>
+                    <span class="target-tag">Фриланс</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="social-section">
+    <!-- Quotes -->
+    <section class="quotes-section">
         <div class="container">
-            <h2>Отзывы предпринимателей</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    "Раньше я узнавал, что денег нет, когда пытался оплатить закупку. С ФинПингом я вижу ситуацию на неделю вперед. Это дает спокойствие за 500 рублей."
-                    <span class="author">— Алексей, владелец кофейни</span>
+            <h2 class="section-title animate-in">Знакомо?</h2>
+            <div class="quotes-grid">
+                <div class="quote-card animate-in">
+                    «От Excel мозги кипят и руки устали»
+                    <span class="quote-source">— форум onliner.by</span>
                 </div>
-                <div class="testimonial-card">
-                    "Пробовала Финтабло, но забросила через неделю — слишком сложно. ФинПинг присылает самое важное прямо в ТГ, трачу 2 минуты в день."
-                    <span class="author">— Марина, онлайн-школа дизайна</span>
+                <div class="quote-card animate-in">
+                    «Таких программ не существует. Причём при огромном, просто дичайшем спросе»
+                    <span class="quote-source">— форум onliner.by</span>
+                </div>
+                <div class="quote-card animate-in">
+                    «90% народа с 1С работать не умеют, потому как 1С требует знаний бух. учёта»
+                    <span class="quote-source">— форум onliner.by</span>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CTA -->
     <section class="cta-bottom">
         <div class="container">
-            <h2>Начните контролировать деньги сегодня</h2>
-            <p style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-light);">Первые 7 дней бесплатно, далее — всего 500 ₽/мес.</p>
-            <div class="hero-buttons">
-                <a href="https://t.me/finpingbot" class="btn">Запустить ФинПинг бота</a>
-                <a href="https://t.me/finpingbot" class="btn-secondary" style="color: var(--primary-color); border-color: var(--primary-color);">Получить чек-лист</a>
+            <h2 class="section-title animate-in">Начните контролировать деньги</h2>
+            <p style="margin-bottom:32px;font-size:1.05rem;color:var(--text-light)" class="animate-in">Сервис в разработке. Запишитесь в лист ожидания — сообщим о запуске первым.</p>
+            <div class="hero-buttons animate-in">
+                <a href="https://t.me/finpingbot" class="btn">Записаться в лист ожидания</a>
+                <a href="#cashflow-calc" class="btn btn-outline-dark">Проверить кэшфлоу бесплатно</a>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 ФинПинг. Сделано для предпринимателей СНГ.</p>
-            <p style="margin-top: 10px; font-size: 0.8rem;">Не является офертой. Telegram является зарегистрированным товарным знаком Telegram FZ-LLC.</p>
+            <p>&copy; 2026 ФинПинг. Сделано для предпринимателей СНГ.</p>
+            <p>Сервис находится в разработке. Информация на сайте не является публичной офертой.</p>
+            <p>Telegram является зарегистрированным товарным знаком Telegram FZ-LLC.</p>
         </div>
     </footer>
 
     <script>
-        document.querySelectorAll('a.btn, a.btn-secondary').forEach(button => {
-            button.addEventListener('click', () => {
-                console.log('CTA clicked: ' + button.innerText);
+        function formatMoney(n) {
+            return n.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        document.getElementById('calcBtn').addEventListener('click', function() {
+            var balance = parseFloat(document.getElementById('balance').value) || 0;
+            var dailyExpense = parseFloat(document.getElementById('dailyExpense').value) || 0;
+            var upcomingPayment = parseFloat(document.getElementById('upcomingPayment').value) || 0;
+            var daysUntilPayment = parseInt(document.getElementById('daysUntilPayment').value) || 0;
+
+            if (balance <= 0 || dailyExpense <= 0) {
+                alert('Укажите остаток на счёте и средний расход в день');
+                return;
+            }
+
+            var daysUntilGap = Math.floor(balance / dailyExpense);
+            var remainingAtPayment = balance - (dailyExpense * daysUntilPayment);
+            var hasGap = upcomingPayment > 0 && daysUntilPayment > 0 && remainingAtPayment < upcomingPayment;
+
+            var riskClass, riskLabel, riskDaysText, riskText;
+
+            if (hasGap || daysUntilGap < 14) {
+                riskClass = 'risk-red';
+                riskLabel = 'Высокий риск';
+                riskDaysText = hasGap ? daysUntilPayment + ' дн.' : daysUntilGap + ' дн.';
+                riskText = hasGap
+                    ? 'К дате платежа (' + formatMoney(upcomingPayment) + ') на счёте останется ' + formatMoney(Math.max(0, remainingAtPayment)) + ' — не хватит.'
+                    : 'При текущем темпе средств хватит примерно на ' + daysUntilGap + ' дней.';
+            } else if (daysUntilGap < 30) {
+                riskClass = 'risk-yellow';
+                riskLabel = 'Средний риск';
+                riskDaysText = daysUntilGap + ' дн.';
+                riskText = 'При текущем темпе средств хватит на ~' + daysUntilGap + ' дней. Следите за крупными платежами.';
+            } else {
+                riskClass = 'risk-green';
+                riskLabel = 'Низкий риск';
+                riskDaysText = '30+ дн.';
+                riskText = 'При текущем темпе запас прочности хороший. Но без учёта доходов картина может быть другой.';
+            }
+
+            var riskCard = document.getElementById('riskCard');
+            riskCard.className = 'risk-card ' + riskClass;
+            document.getElementById('riskLevel').textContent = riskLabel;
+            document.getElementById('riskDays').textContent = riskDaysText;
+            document.getElementById('riskText').textContent = riskText;
+
+            var pingHtml = '📊 <strong>ФинПинг · 9:00</strong><br><br>';
+            pingHtml += 'Расход: −' + formatMoney(dailyExpense) + '/день<br>';
+            pingHtml += 'Остаток: <strong>' + formatMoney(balance) + '</strong><br>';
+            if (hasGap) {
+                pingHtml += '<span style="color:#dc2626;font-weight:600">⚠️ Прогноз: разрыв возможен через ' + daysUntilPayment + ' дн.</span><br>';
+                pingHtml += '📅 Через ' + daysUntilPayment + ' дн.: платёж ' + formatMoney(upcomingPayment);
+            } else {
+                pingHtml += '<span style="color:#10B981;font-weight:600">✓ Запас: ~' + daysUntilGap + ' дней</span>';
+                if (upcomingPayment > 0 && daysUntilPayment > 0) {
+                    pingHtml += '<br>📅 Через ' + daysUntilPayment + ' дн.: платёж ' + formatMoney(upcomingPayment);
+                }
+            }
+            document.getElementById('pingPreview').innerHTML = pingHtml;
+
+            var tips = [];
+            if (hasGap || daysUntilGap < 14) {
+                tips.push('Договоритесь об отсрочке с поставщиком заранее — не в день платежа');
+                tips.push('Отложите налоги отдельно: остаток на счёте обманчив');
+            }
+            if (daysUntilGap < 30) {
+                tips.push('Запишите все регулярные платежи: аренда, зарплаты, налоги');
+            }
+            tips.push('Ведите учёт хотя бы 10 минут в день — это дешевле кассового разрыва');
+
+            var tipsList = document.getElementById('tipsList');
+            tipsList.innerHTML = tips.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+            document.getElementById('calcResult').classList.add('show');
+            document.getElementById('calcTips').style.display = 'block';
+            document.getElementById('calcCta').style.display = 'block';
+
+            console.log('Calculator used: gap=' + daysUntilGap + ' days, risk=' + riskClass);
+        });
+
+        document.querySelectorAll('a.btn, a.btn-outline, a.btn-outline-dark').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                console.log('CTA clicked: ' + btn.textContent.trim());
             });
         });
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.animate-in').forEach(function(el) {
+                observer.observe(el);
+            });
+        } else {
+            document.querySelectorAll('.animate-in').forEach(function(el) {
+                el.classList.add('visible');
+            });
+        }
     </script>
 </body>
 </html>
